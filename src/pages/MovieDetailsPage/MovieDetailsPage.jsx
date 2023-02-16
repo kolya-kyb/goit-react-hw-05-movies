@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink, Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import { getMovieDetails, getImageUrl } from '../../shared/Api/Api';
@@ -20,7 +20,7 @@ const MovieDetailsPage = () => {
         setFilm(() => data);
         setImg(() =>
           data.poster_path
-            ? getImageUrl(data.poster_path, 300)
+            ? getImageUrl(data.poster_path, 'original')
             : 'https://dummyimage.com/640x480/2a2a2a/ffffff&text=Product+image+placeholder'
         );
         setGenres(() => data.genres);
@@ -35,7 +35,7 @@ const MovieDetailsPage = () => {
       }
     };
     fetchFilms();
-  }, []);
+  }, [movieId]);
 
   const createListGenres = items => {
     const elements = items.map(({ id, name }) => <li key={id}> {name}</li>);
@@ -46,14 +46,32 @@ const MovieDetailsPage = () => {
     <div>
       {error && <div>{error}</div>}
       {!error && (
-        <div>
-          <h2>
-            tittle{film.title} {dateRelease}
-          </h2>
+        <>
+          <div>
+            <h2>
+              {film.title} {dateRelease}
+            </h2>
+            <p>{film.overview}</p>
+            <p>User Score: {film.vote_average}</p>
 
-          <img src={img} alt="" />
-          <div> {createListGenres(genres)}</div>
-        </div>
+            <img src={img} alt={film.title} width="100px" />
+            <div> {createListGenres(genres)}</div>
+          </div>
+          <div>
+            <h3>Additional information</h3>
+            <ul>
+              <li>
+                <NavLink to={`/movies/${movieId}/cast`}>Cast</NavLink>
+              </li>
+              <li>
+                <NavLink to={`/movies/${movieId}/reviews`}>Reviews</NavLink>
+              </li>
+            </ul>
+            <div>
+              <Outlet />
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

@@ -18,5 +18,10 @@ export const getMovieDetails = async movie_id => {
 };
 
 export const getImageUrl = (imgName, imgSize) => {
-  return ` https://image.tmdb.org/t/p/w${imgSize}/${imgName}`;
+  return ` https://image.tmdb.org/t/p/${imgSize}/${imgName}`;
+};
+
+export const getCast = async movie_id => {
+  const { data } = await instance.get(`/movie/${movie_id}/credits`);
+  return data;
 };
