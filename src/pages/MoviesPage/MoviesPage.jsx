@@ -1,0 +1,5 @@
+const MiviesPage = () => {
+  return <h1>Hello</h1>;
+};
+
+export default MiviesPage;
