@@ -14,7 +14,7 @@ const FilmTrending = () => {
       try {
         setLoading(true);
         const data = await getTrendingFilms();
-        // const { results } = data;
+
         setItems(items => [...items, ...data.results]);
       } catch (error) {
         setError(error.message);
@@ -27,9 +27,9 @@ const FilmTrending = () => {
 
   return (
     <>
-      <FilmList items={items} />
-      {error && <p>{error}</p>}
       {loading && <Loader />}
+      {error && <p>{error}</p>}
+      <FilmList items={items} />
     </>
   );
 };

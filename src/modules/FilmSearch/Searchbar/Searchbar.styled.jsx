@@ -4,7 +4,7 @@ import { Field, Form } from 'formik';
 
 import serchImg from 'img/search.svg';
 
-export const SearchBar = styled.header`
+export const SearchBar = styled.div`
   top: 0;
   left: 0;
   position: sticky;
@@ -17,6 +17,7 @@ export const SearchBar = styled.header`
   padding-left: 24px;
   padding-top: 12px;
   padding-bottom: 12px;
+  margin-bottom: 25px;
   color: #fff;
   background-color: #3f51b5;
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),

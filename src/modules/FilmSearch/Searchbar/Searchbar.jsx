@@ -12,21 +12,21 @@ import {
 
 const SearchForm = ({ onSubmit }) => {
   const handleSubmit = search => {
-    if (search.search === '') {
+    if (search.searchFilm === '') {
       return;
     }
     onSubmit(search);
   };
   return (
     <SearchBar>
-      <Formik initialValues={{ search: '' }} onSubmit={handleSubmit}>
+      <Formik initialValues={{ searchFilm: '' }} onSubmit={handleSubmit}>
         <SearchForma>
           <Button type="submit">
             <ButtonLabel>Search</ButtonLabel>
           </Button>
 
           <Input
-            name="search"
+            name="searchFilm"
             type="text"
             autoComplete="off"
             autoFocus

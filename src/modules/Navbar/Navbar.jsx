@@ -1,15 +1,15 @@
-import { NavLink } from 'react-router-dom';
+import { LinkStyled, MenuList } from './Navbar.styled';
 
 import items from './items';
 
 const Navbar = () => {
   const elements = items.map(({ id, text, link }) => (
     <li key={id}>
-      <NavLink to={link}>{text}</NavLink>
+      <LinkStyled to={link}>{text}</LinkStyled>
     </li>
   ));
 
-  return <ul>{elements}</ul>;
+  return <MenuList>{elements}</MenuList>;
 };
 
 export default Navbar;

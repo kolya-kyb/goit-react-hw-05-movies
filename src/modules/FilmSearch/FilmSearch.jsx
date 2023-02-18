@@ -10,6 +10,7 @@ const FilmSearch = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(false);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search');
@@ -24,8 +25,13 @@ const FilmSearch = () => {
       try {
         setLoading(true);
         const data = await getSearchMovies(search, page);
-        console.log(search);
+        if (!data.results.length) {
+          setMessage(true);
+          return;
+        }
+
         setItems(prevItems => [...prevItems, ...data.results]);
+        setMessage(false);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -35,8 +41,11 @@ const FilmSearch = () => {
     fetchFilms();
   }, [search, page, setLoading, setItems, setError]);
 
-  const onSearchFilms = ({ search }) => {
-    setSearchParams({ search, page: 1 });
+  const onSearchFilms = ({ searchFilm }) => {
+    if (search === searchFilm) {
+      return;
+    }
+    setSearchParams({ search: searchFilm, page: 1 });
     setItems([]);
   };
 
@@ -48,6 +57,7 @@ const FilmSearch = () => {
     <>
       <SearchForm onSubmit={onSearchFilms} />
       <FilmList items={items} />
+      {message && <p>No result</p>}
       {error && <p>{error}</p>}
       {loading && <Loader />}
       {Boolean(items.length) && <button onClick={loadMore}>Load more</button>}

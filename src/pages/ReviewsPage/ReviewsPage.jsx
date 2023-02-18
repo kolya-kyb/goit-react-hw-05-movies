@@ -1,14 +1,15 @@
-// const ReviewsPage = () => {
-//   return <h1>revievs</h1>;
-// };
-
-// export default ReviewsPage;
-
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { getMovieReviews } from '../../shared/Api/Api';
 import Loader from 'modules/Loader/Loader';
+
+import {
+  Container,
+  ReviewCard,
+  ReviewList,
+  NoComment,
+} from './ReviewsPage.styled';
 
 const ReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -31,18 +32,9 @@ const ReviewsPage = () => {
         setReviews(() =>
           results.map(item => {
             return (
-              <li key={item.id}>
-                {/* <img
-                  src={
-                    item.profile_path
-                      ? getImageUrl(item.profile_path, 'original')
-                      : 'https://dummyimage.com/640x480/2a2a2a/ffffff&text=Product+image+placeholder'
-                  }
-                  alt=""
-                  width="50px"
-                /> */}
-                <b>{item.author}</b> content: {item.content}
-              </li>
+              <ReviewCard key={item.id}>
+                <p>{item.author}</p> {item.content}
+              </ReviewCard>
             );
           })
         );
@@ -55,12 +47,12 @@ const ReviewsPage = () => {
     fetchReviews();
   }, [movieId]);
   return (
-    <>
-      {message && <div>No comment</div>}
-      {reviews.length !== 0 && <div> {reviews}</div>}
+    <Container>
+      {message && <NoComment>No comment</NoComment>}
+      {reviews.length !== 0 && <ReviewList> {reviews}</ReviewList>}
       {error && <p>{error}</p>}
       {loading && <Loader />}
-    </>
+    </Container>
   );
 };
 

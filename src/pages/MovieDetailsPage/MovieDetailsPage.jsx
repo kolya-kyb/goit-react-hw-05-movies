@@ -1,13 +1,28 @@
-import { useParams, NavLink, Outlet } from 'react-router-dom';
+import { useParams, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import { getMovieDetails, getImageUrl } from '../../shared/Api/Api';
 
+import BackLink from 'modules/BackLink/BackLink';
+import Loader from 'modules/Loader/Loader';
+
+import {
+  Wrapper,
+  TitleWrapper,
+  MovieInfoWrapper,
+  GenresWrapper,
+  AdditionalInfoWrapper,
+} from './MovieDetailsPage.styled';
+
 const MovieDetailsPage = () => {
+  const location = useLocation();
+  const backLinkHref = location.state?.from || '/';
+
   const [film, setFilm] = useState({});
   const [img, setImg] = useState('');
   const [error, setError] = useState(null);
   const [genres, setGenres] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [dateRelease, setDateRelease] = useState(null);
 
   const { movieId } = useParams();
@@ -15,7 +30,7 @@ const MovieDetailsPage = () => {
   useEffect(() => {
     const fetchFilms = async () => {
       try {
-        // setLoading(true);
+        setLoading(true);
         const data = await getMovieDetails(movieId);
         setFilm(() => data);
         setImg(() =>
@@ -31,7 +46,7 @@ const MovieDetailsPage = () => {
       } catch (error) {
         setError(error.message);
       } finally {
-        // setLoading(false);
+        setLoading(false);
       }
     };
     fetchFilms();
@@ -43,37 +58,53 @@ const MovieDetailsPage = () => {
     return <ul>{elements}</ul>;
   };
   return (
-    <div>
-      {error && <div>{error}</div>}
-      {!error && (
+    <Wrapper>
+      {error && <p>{error}</p>}
+      {loading && <Loader />}
+      <BackLink to={backLinkHref}>Back</BackLink>
+      {Boolean(film) ? (
         <>
-          <div>
+          <TitleWrapper>
             <h2>
               {film.title} {dateRelease}
             </h2>
-            <p>{film.overview}</p>
-            <p>User Score: {film.vote_average}</p>
+          </TitleWrapper>
 
+          <p>User Score: {film.vote_average}</p>
+          <MovieInfoWrapper>
             <img src={img} alt={film.title} width="100px" />
-            <div> {createListGenres(genres)}</div>
-          </div>
-          <div>
-            <h3>Additional information</h3>
-            <ul>
-              <li>
-                <NavLink to={`/movies/${movieId}/cast`}>Cast</NavLink>
-              </li>
-              <li>
-                <NavLink to={`/movies/${movieId}/reviews`}>Reviews</NavLink>
-              </li>
-            </ul>
-            <div>
-              <Outlet />
-            </div>
-          </div>
+            <p>{film.overview}</p>
+          </MovieInfoWrapper>
+
+          <GenresWrapper> {createListGenres(genres)}</GenresWrapper>
         </>
+      ) : (
+        <p>No result</p>
       )}
-    </div>
+      <AdditionalInfoWrapper>
+        <h3>Additional information</h3>
+        <ul>
+          <li>
+            <NavLink
+              to={`/movies/${movieId}/cast`}
+              state={{ from: backLinkHref }}
+            >
+              Cast
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={`/movies/${movieId}/reviews`}
+              state={{ from: backLinkHref }}
+            >
+              Reviews
+            </NavLink>
+          </li>
+        </ul>
+
+        <Outlet />
+      </AdditionalInfoWrapper>
+    </Wrapper>
   );
 };
 

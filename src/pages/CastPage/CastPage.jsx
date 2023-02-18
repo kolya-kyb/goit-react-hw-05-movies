@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { getCast, getImageUrl } from '../../shared/Api/Api';
 import Loader from 'modules/Loader/Loader';
 
+import { CastCard, CastCardList } from './CastPage.style';
+
 const CastPage = () => {
   const [cast, setCast] = useState([]);
 
@@ -21,7 +23,7 @@ const CastPage = () => {
         setCast(() =>
           cast.map(item => {
             return (
-              <li key={item.id}>
+              <CastCard key={item.id}>
                 <img
                   src={
                     item.profile_path
@@ -32,7 +34,7 @@ const CastPage = () => {
                   width="50px"
                 />
                 {item.name} chracter: {item.character}
-              </li>
+              </CastCard>
             );
           })
         );
@@ -46,9 +48,13 @@ const CastPage = () => {
   }, [movieId]);
   return (
     <>
-      <div> {cast}</div>
       {error && <p>{error}</p>}
       {loading && <Loader />}
+      {cast.length > 0 ? (
+        <CastCardList>{cast}</CastCardList>
+      ) : (
+        <p>No cast information available for this movie</p>
+      )}
     </>
   );
 };
