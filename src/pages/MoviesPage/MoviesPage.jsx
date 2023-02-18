@@ -1,5 +1,7 @@
-const MiviesPage = () => {
-  return <h1>Hello</h1>;
+import FilmSearch from 'modules/FilmSearch/FilmSearch';
+
+const MoviesPage = () => {
+  return <FilmSearch />;
 };
 
-export default MiviesPage;
+export default MoviesPage;

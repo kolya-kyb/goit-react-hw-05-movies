@@ -25,3 +25,15 @@ export const getCast = async movie_id => {
   const { data } = await instance.get(`/movie/${movie_id}/credits`);
   return data;
 };
+
+export const getMovieReviews = async movie_id => {
+  const { data } = await instance.get(`/movie/${movie_id}/reviews`);
+  return data;
+};
+
+export const getSearchMovies = async (query, page) => {
+  const { data } = await instance.get('/search/movie', {
+    params: { query, page },
+  });
+  return data;
+};
