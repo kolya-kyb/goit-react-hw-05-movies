@@ -11,7 +11,6 @@ import {
 } from './Searchbar.styled';
 
 const SearchForm = ({ onSubmit, values }) => {
-  console.log(values);
   const handleSubmit = search => {
     if (search.searchFilm === '') {
       return;
@@ -43,4 +42,5 @@ export default SearchForm;
 
 SearchForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  values: PropTypes.string,
 };
