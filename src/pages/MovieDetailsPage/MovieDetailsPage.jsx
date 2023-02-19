@@ -1,5 +1,5 @@
 import { useParams, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
 import { getMovieDetails, getImageUrl } from '../../shared/Api/Api';
 
@@ -101,8 +101,9 @@ const MovieDetailsPage = () => {
             </NavLink>
           </li>
         </ul>
-
-        <Outlet />
+        <Suspense fallback={<Loader />}>
+          <Outlet />
+        </Suspense>
       </AdditionalInfoWrapper>
     </Wrapper>
   );

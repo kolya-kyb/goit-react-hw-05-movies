@@ -2,24 +2,30 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { getCast, getImageUrl } from '../../shared/Api/Api';
-import Loader from 'modules/Loader/Loader';
+// import Loader from 'modules/Loader/Loader';
 
 import { CastCard, CastCardList } from './CastPage.style';
 
 const CastPage = () => {
   const [cast, setCast] = useState([]);
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
 
   const { movieId } = useParams();
 
   useEffect(() => {
     const fetchCast = async () => {
       try {
-        setLoading(true);
+        // setLoading(true);
         const data = await getCast(movieId);
+
         const { cast } = data;
+        if (!cast.length) {
+          setMessage(true);
+          return;
+        }
         setCast(() =>
           cast.map(item => {
             return (
@@ -41,7 +47,7 @@ const CastPage = () => {
       } catch (error) {
         setError(error.message);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
     fetchCast();
@@ -49,12 +55,9 @@ const CastPage = () => {
   return (
     <>
       {error && <p>{error}</p>}
-      {loading && <Loader />}
-      {cast.length > 0 ? (
-        <CastCardList>{cast}</CastCardList>
-      ) : (
-        <p>No cast information available for this movie</p>
-      )}
+      {/* {loading && <Loader />} */}
+      {message && <p>No cast information available for this movie</p>}
+      <CastCardList>{cast}</CastCardList>
     </>
   );
 };

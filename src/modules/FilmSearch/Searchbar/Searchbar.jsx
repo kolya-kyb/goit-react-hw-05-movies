@@ -10,7 +10,8 @@ import {
   ButtonLabel,
 } from './Searchbar.styled';
 
-const SearchForm = ({ onSubmit }) => {
+const SearchForm = ({ onSubmit, values }) => {
+  console.log(values);
   const handleSubmit = search => {
     if (search.searchFilm === '') {
       return;
@@ -19,7 +20,7 @@ const SearchForm = ({ onSubmit }) => {
   };
   return (
     <SearchBar>
-      <Formik initialValues={{ searchFilm: '' }} onSubmit={handleSubmit}>
+      <Formik initialValues={{ searchFilm: values }} onSubmit={handleSubmit}>
         <SearchForma>
           <Button type="submit">
             <ButtonLabel>Search</ButtonLabel>

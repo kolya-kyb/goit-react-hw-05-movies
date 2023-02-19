@@ -15,6 +15,7 @@ const FilmSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search');
   const page = searchParams.get('page');
+  const initialValues = search ? search : ' ';
 
   useEffect(() => {
     if (!search) {
@@ -52,10 +53,10 @@ const FilmSearch = () => {
   const loadMore = () => {
     setSearchParams({ search, page: Number(page) + 1 });
   };
-
+  // console.log(searchParams.get('search'));
   return (
     <>
-      <SearchForm onSubmit={onSearchFilms} />
+      <SearchForm onSubmit={onSearchFilms} values={initialValues} />
       <FilmList items={items} />
       {message && <p>No result</p>}
       {error && <p>{error}</p>}
